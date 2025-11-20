@@ -1,0 +1,153 @@
+---
+title             : "Residential Instability and Childhood Wellbeing"
+shorttitle        : "Residence and Wellbeing"
+
+author: 
+  - name          : "Libby Kramer"
+    affiliation   : "1"
+    corresponding : yes    # Define only one corresponding author
+    address       : "75 E River Parkway, Minneapolis MN"
+    email         : "krame937@umn.edu"
+    role: # Contributorship roles (e.g., CRediT, https://credit.niso.org/)
+      - "Conceptualization"
+      - "Writing - Original Draft Preparation"
+      - "Writing - Review & Editing"
+
+affiliation:
+  - id            : "1"
+    institution   : "University of Minnesota"
+
+authornote: |
+  Add complete departmental affiliations for each author here. Each new line herein must be indented, like this line.
+
+  Enter author note here.
+
+abstract: |
+  One or two sentences providing a **basic introduction** to the field,  comprehensible to a scientist in any discipline.
+  Two to three sentences of **more detailed background**, comprehensible  to scientists in related disciplines.
+  One sentence clearly stating the **general problem** being addressed by  this particular study.
+  One sentence summarizing the main result (with the words "**here we show**" or their equivalent).
+  Two or three sentences explaining what the **main result** reveals in direct comparison to what was thought to be the case previously, or how the  main result adds to previous knowledge.
+  One or two sentences to put the results into a more **general context**.
+  Two or three sentences to provide a **broader perspective**, readily comprehensible to a scientist in any discipline.
+  
+  <!-- https://tinyurl.com/ybremelq -->
+  
+keywords          : "keywords"
+wordcount         : "X"
+
+bibliography      : "r-references.bib"
+
+floatsintext      : no
+linenumbers       : no
+draft             : no
+mask              : no
+
+figurelist        : no
+tablelist         : no
+footnotelist      : no
+
+classoption       : "man"
+output            : papaja::apa6_pdf
+---
+
+```{r setup, include = FALSE}
+library("papaja")
+library("groundhog")
+library("dplyr")
+library("psych")
+library("labelled")
+library("ggplot2")
+library("data.table")
+library("dplyr")
+library("bit64")
+r_refs("r-references.bib")
+```
+
+```{r analysis-preferences}
+# Seed for random number generation
+set.seed(0628)
+knitr::opts_chunk$set(cache.extra = knitr::rand_seed)
+```
+
+```{r data setup, inlcude = FALSE}
+# selecting variables from the full SIPP dataset 
+ds <- c("pu2024 2.csv")
+pu <- fread(ds, sep = "|", select = c("ECLUB", "EEXPSCH", "EREPGRD", "ESPORT", "EEHC_PVTEN", "EEHC_WHY", "TAGE", "TDOB_BYEAR", "ERACE", "ESEX"))
+
+names(pu) <- toupper(names(pu))
+
+head(pu, 20)
+
+# creating objects to be inserted into the report 
+# omitting missing values from the dataset
+dat <- na.omit(pu)
+
+# assigning varibales new names
+cwb_1 <- (dat$ECLUB)
+
+# key cwb_2 negatively
+recode(dat$EEXPSCH, '1'= 2, '2' = 1)
+cwb_2_r <- recode(cwb_2, '1'= 2, '2' = 1)
+cwb_2_r
+
+# checks that cwb_2 was reverse coded correctly
+table(cwb_2)
+table(cwb_2_r)
+
+# key cwb_3 negatively
+recode(dat$EREPGRD, '1' = 2, '2' = 1)
+cwb_3_r <- recode(dat$EREPGRD, '1' = 2, '2' = 1)
+cwb_3_r
+
+# check that cwb_3 was reverse coded correctly 
+table(cwb_3)
+table(cwb_3_r)
+
+cwb_4 <- (dat$ESPORT)
+
+# create new row of the cwb_scale based on the mean scores of all of the cwb variables
+dat <- dat %>% dplyr::mutate(cwb_scale = rowMeans(pick(cwb_1, cwb_2, cwb_3, cwb_4)))
+mean(dat$cwb_scale)
+sd(dat$cwb_scale)
+
+
+# assigning varibale names for residential stability
+res_1 <- (dat$EEHC_PVTEN)
+res_1
+table(res_1)
+
+res_2 <- (dat$EEHC_WHY)
+res_2
+table(res_2)
+
+
+```
+
+
+# Methods
+Data and code are available on [GitHub] (https://github.com/libby-kramer/Residential_Instability_Project)
+
+We report how we determined our sample size, all data exclusions (if any), all manipulations, and all measures in the study. <!-- 21-word solution (Simmons, Nelson & Simonsohn, 2012; retrieved from http://ssrn.com/abstract=2160588) -->
+
+## Participants
+
+## Material
+
+## Procedure
+
+## Data analysis
+We used `r cite_r("r-references.bib")` for all our analyses.
+
+
+# Results
+
+# Discussion
+
+
+\newpage
+
+# References
+
+::: {#refs custom-style="Bibliography"}
+:::

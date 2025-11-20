@@ -3,7 +3,6 @@
 ### November 11th, 2025
 ### Residential Instability and Well-being Project
 
-
 # workspace setup
 install.packages("groundhog")
 install.packages("faux")
@@ -26,104 +25,19 @@ sessionInfo()
 # missMethods_0.4.0
 # dplyr_1.1.4
 
-# setting seed!
-set.seed(0628)
 
-###############
-# rnorm raw
-# simulated cwb_scale data
-rnorm(n = 10, mean = 1.83829, sd = 0.2523522)
+# using sample() to simulate items 
 
-outcome <- rnorm(n = 10, mean = 1.83829, sd = 0.2523522)
-# does this still work if I am not using continuous data
-dat_rnorm <- data.frame(outcome)
-head(dat_rnorm)
-
-mean(dat_rnorm$outcome)
-sd(dat_rnorm$outcome)
-
-# setting up a function
-data_generate <- function(n, m, sd) {
-  set.seed(0628)
-  g <- rnorm(n = n, mean = m, sd = sd)
-  data <- data.frame(
-    return(data)
-  )
-}
-
-# set parameters and create data
-dat_rnorm_func <- data_generate(n = 10, m = 1.83829, sd = 0.2523522)
-dat_rnorm_func
-
-# GETTING AN ERROR HERE
-mean(dat_rnorm_func$outcome)
-sd(dat_rnorm_func$outcome)
-
-
-# rnorm, but now two groups
-data_generate <- function(n1, n2, m1, m2, sd1, sd2) {
-  set.seed(0628)
-  
-  g1 <- rnorm(n = n1, mean = m1, sd = sd1)
-  g2 <- rnorm(n = n2, mean = m2, sd = sd2)
-  
-  data <- data.frame(
-    group = rep(c("1", "2"), times = c(n1, n2)),
-    outcome = c(g1, g2)
-  )
-  return(data)
-}
-
-# set parameters and create data
-dat_rnorm_func_two <- data_generate(n1 = 50, n2 = 50,
-                                    m1 = 1.83829, m2 = 1.816171,
-                                    sd1 = 0.2523522, sd2 = 0.6098213)
-# checks
-head(dat_rnorm_func_two)
-
-### ERROR could not find function "%>%"
-dat_rnorm_func_two %>% dplyr::group_by(group) %>% 
-  dplyr::summarise(mean = mean(outcome, na.rm = TRUE), sd = sd(outcome, na.rm = TRUE))
-
-
-#############################
-# rnorm_multi() from the faux package
-# set the parameters
-
-n <- 100
-m1 <- 1.83829
-sd1 <- 0.2523522
-m2 <- 1.816171
-sd2 <- 0.6098213
-
-
-# create the data file
-dat_faux <- faux::rnorm_multi(n = n,
-                              mu = c(m1, m2),
-                              sd = c(sd1, sd2),
-                              varnames = c("g1", "g2"))
-
-# checks
-head(dat_faux)
-mean(dat_faux$g1)
-mean(dat_faux$g2)
-sd(dat_faux$g1)
-sd(dat_faux$g2)
-
-##############################
-# using sample() to simulate items - most useful for preregistration
-# get info on data specs from dictionary
-
+# read in data file
 dict <- read.csv("Residential_Stability_Wellbeing_data_dictionary.csv")
 dict
 
-# create empty data frame and populate with id variable based on your N (N = 100 here)
+# create empty data frame and populate with id variable based on your N (N = 6691 here)
 
 dat_sim <- data.frame(id = c(1:6691))
 head(dat_sim)
 
 # now simulate individual items based on properties of interest
-# binary item, equal probability
 
 dat_sim$cwb_1_sim <- sample(1:2, size = 6691, replace = TRUE, prob = c(.40, .60))
 table(dat_sim$cwb_1)
@@ -136,8 +50,6 @@ table(dat_sim$cwb_3_sim)
 
 dat_sim$cwb_4_sim <- sample(1:2, size = 6691, replace = TRUE, prob = c(.50, .50))
 table(dat_sim$cwb_4_sim)
-
-### simulate raw data and recode it later
 
 dat_sim$res_1_sim <- sample(1:3, size = 6691, replace = TRUE, prob = c(.30, .50, .20))
 table(dat_sim$res_1)
