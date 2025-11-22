@@ -23,6 +23,8 @@ authornote: |
   Enter author note here.
 
 abstract: |
+  Research has suggested that quality of housing is a social determinant of health and that residential stability is a factor for older adults's health (CITE). This report will look more specifically at the relationship between residential stability and child well-being. As housing is not gaurenteed in the United States it is important to understand the relationship between where children are living and their wellbeing at home and in school. 
+  
   One or two sentences providing a **basic introduction** to the field,  comprehensible to a scientist in any discipline.
   Two to three sentences of **more detailed background**, comprehensible  to scientists in related disciplines.
   One sentence clearly stating the **general problem** being addressed by  this particular study.
@@ -33,12 +35,12 @@ abstract: |
   
   <!-- https://tinyurl.com/ybremelq -->
   
-keywords          : "keywords"
+keywords          : "housing, residential stability, childhood wellbeing, health, social determinants of health"
 wordcount         : "X"
 
 bibliography      : "r-references.bib"
 
-floatsintext      : no
+floatsintext      : yes
 linenumbers       : no
 draft             : no
 mask              : no
@@ -70,8 +72,8 @@ set.seed(0628)
 knitr::opts_chunk$set(cache.extra = knitr::rand_seed)
 ```
 
-```{r data setup, inlcude = FALSE}
-# selecting variables from the full SIPP dataset 
+```{r data setup, include = FALSE}
+# selecting variables from the full SIPP data set 
 ds <- c("pu2024 2.csv")
 pu <- fread(ds, sep = "|", select = c("ECLUB", "EEXPSCH", "EREPGRD", "ESPORT", "EEHC_PVTEN", "EEHC_WHY", "TAGE", "TDOB_BYEAR", "ERACE", "ESEX"))
 
@@ -80,13 +82,14 @@ names(pu) <- toupper(names(pu))
 head(pu, 20)
 
 # creating objects to be inserted into the report 
-# omitting missing values from the dataset
+# omitting missing values from the data set
 dat <- na.omit(pu)
 
-# assigning varibales new names
+# assigning variables new names
 cwb_1 <- (dat$ECLUB)
 
 # key cwb_2 negatively
+cwb_2 <- (dat$EEXPSCH)
 recode(dat$EEXPSCH, '1'= 2, '2' = 1)
 cwb_2_r <- recode(cwb_2, '1'= 2, '2' = 1)
 cwb_2_r
@@ -96,6 +99,7 @@ table(cwb_2)
 table(cwb_2_r)
 
 # key cwb_3 negatively
+cwb_3 <- (dat$EREPGRD)
 recode(dat$EREPGRD, '1' = 2, '2' = 1)
 cwb_3_r <- recode(dat$EREPGRD, '1' = 2, '2' = 1)
 cwb_3_r
@@ -106,11 +110,24 @@ table(cwb_3_r)
 
 cwb_4 <- (dat$ESPORT)
 
+# mean scores for cwb items
+cwb_1_mean <- mean(cwb_1)
+cwb_2_r_mean <- mean(cwb_2_r)
+cwb_3_r_mean <- mean(cwb_3_r)
+cwb_4_mean <- mean (cwb_4)
+
+# standard deviation for cwb items
+cwb_1_sd <- sd(cwb_1)
+cwb_2_r_sd <- sd(cwb_2_r)
+cwb_3_r_sd <- sd(cwb_3_r)
+cwb_4_sd <- sd(cwb_4)
+
+
+
 # create new row of the cwb_scale based on the mean scores of all of the cwb variables
 dat <- dat %>% dplyr::mutate(cwb_scale = rowMeans(pick(cwb_1, cwb_2, cwb_3, cwb_4)))
 mean(dat$cwb_scale)
 sd(dat$cwb_scale)
-
 
 # assigning varibale names for residential stability
 res_1 <- (dat$EEHC_PVTEN)
@@ -121,16 +138,36 @@ res_2 <- (dat$EEHC_WHY)
 res_2
 table(res_2)
 
+# assigning variable names for demographic data
+dem_1 <- (dat$TAGE)
+dem_1
+dem_2 <- (dat$ERACE)
+dem_2
+dem_3 <- (dat$ESEX)
+dem_3
+
+
+
 
 ```
 
 
 # Methods
-Data and code are available on [GitHub] (https://github.com/libby-kramer/Residential_Instability_Project)
-
-We report how we determined our sample size, all data exclusions (if any), all manipulations, and all measures in the study. <!-- 21-word solution (Simmons, Nelson & Simonsohn, 2012; retrieved from http://ssrn.com/abstract=2160588) -->
+The current study was not preregistered. Data and code are available on [GitHub *click here* ](https://github.com/libby-kramer/Residential_Instability_Project)
+Data retrieved from the 2024 Survey of Income and Program Participation <https://www.census.gov/programs-surveys/sipp/data/datasets/2024-data/2024.html>
 
 ## Participants
+```{r demographics, include = FALSE}
+# average age of respondents 
+dem_1_mean <- mean(dem_1)
+dem_1_mean
+
+# standard deviation of age
+dem_1_sd <- sd(dem_1)
+dem_1_sd
+
+```
+The total sample in the current study consists of `r nrow(dat)`
 
 ## Material
 
@@ -139,9 +176,16 @@ We report how we determined our sample size, all data exclusions (if any), all m
 ## Data analysis
 We used `r cite_r("r-references.bib")` for all our analyses.
 
-
 # Results
-
+```{r descriptive table, echo=FALSE}
+cwb_table <- dplyr::tribble(
+    ~Item, ~Mean, ~SD,
+    "CWB Item 1", cwb_1_mean,  cwb_1_sd,
+    "CWB Item 2", cwb_2_r_mean,  cwb_2_r_sd,
+    "CWB Item 3", cwb_3_r_mean,  cwb_3_r_sd,
+    "CWB Item 4", cwb_4_mean,  cwb_4_sd)
+cwb_table
+```
 # Discussion
 
 
