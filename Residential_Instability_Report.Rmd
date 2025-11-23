@@ -24,16 +24,8 @@ authornote: |
 
 abstract: |
   Research has suggested that quality of housing is a social determinant of health and that residential stability is a factor for older adults's health (CITE). This report will look more specifically at the relationship between residential stability and child well-being. As housing is not gaurenteed in the United States it is important to understand the relationship between where children are living and their wellbeing at home and in school. 
+  In this study we found that...
   
-  One or two sentences providing a **basic introduction** to the field,  comprehensible to a scientist in any discipline.
-  Two to three sentences of **more detailed background**, comprehensible  to scientists in related disciplines.
-  One sentence clearly stating the **general problem** being addressed by  this particular study.
-  One sentence summarizing the main result (with the words "**here we show**" or their equivalent).
-  Two or three sentences explaining what the **main result** reveals in direct comparison to what was thought to be the case previously, or how the  main result adds to previous knowledge.
-  One or two sentences to put the results into a more **general context**.
-  Two or three sentences to provide a **broader perspective**, readily comprehensible to a scientist in any discipline.
-  
-  <!-- https://tinyurl.com/ybremelq -->
   
 keywords          : "housing, residential stability, childhood wellbeing, health, social determinants of health"
 wordcount         : "X"
@@ -123,11 +115,12 @@ cwb_3_r_sd <- sd(cwb_3_r)
 cwb_4_sd <- sd(cwb_4)
 
 
-
 # create new row of the cwb_scale based on the mean scores of all of the cwb variables
-dat <- dat %>% dplyr::mutate(cwb_scale = rowMeans(pick(cwb_1, cwb_2, cwb_3, cwb_4)))
+dat <- dat %>% dplyr::mutate(cwb_scale = rowMeans(pick(cwb_1, cwb_2_r, cwb_3_r, cwb_4)))
 mean(dat$cwb_scale)
 sd(dat$cwb_scale)
+
+
 
 # assigning varibale names for residential stability
 res_1 <- (dat$EEHC_PVTEN)
@@ -153,7 +146,7 @@ dem_3
 
 
 # Methods
-The current study was not preregistered. Data and code are available on [GitHub *click here* ](https://github.com/libby-kramer/Residential_Instability_Project)
+The current study was not preregistered. Data and code are available on Github [*click here* ](https://github.com/libby-kramer/Residential_Instability_Project)
 Data retrieved from the 2024 Survey of Income and Program Participation <https://www.census.gov/programs-surveys/sipp/data/datasets/2024-data/2024.html>
 
 ## Participants
@@ -184,10 +177,16 @@ cwb_table <- dplyr::tribble(
     "CWB Item 2", cwb_2_r_mean,  cwb_2_r_sd,
     "CWB Item 3", cwb_3_r_mean,  cwb_3_r_sd,
     "CWB Item 4", cwb_4_mean,  cwb_4_sd)
-cwb_table
-```
-# Discussion
 
+apa_table(cwb_table, 
+             caption = "Descriptivse for Childhood Wellbeing Scale Items",
+             align = "l", digits = 2,
+          note = "True or false questions keyed 1 as postive and 2 as negative")
+
+# I THINK THIS NEEDS TO BE CHANGED SO THAT THEY ARE BOTH IN THE SIMULATED DATA
+cor.test(dat$cwb_scale, res_1, method = c("pearson"))
+
+```
 
 \newpage
 
