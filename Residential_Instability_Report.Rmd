@@ -1,12 +1,12 @@
 ---
 title             : "Residential Instability and Childhood Wellbeing"
-shorttitle        : "Residence and Wellbeing"
+shorttitle        : "Residential Stability"
 
 author: 
   - name          : "Libby Kramer"
     affiliation   : "1"
     corresponding : yes    # Define only one corresponding author
-    address       : "75 E River Parkway, Minneapolis MN"
+    address       : "Elliott Halll 75 E River Parkway, Minneapolis MN"
     email         : "krame937@umn.edu"
     role: # Contributorship roles (e.g., CRediT, https://credit.niso.org/)
       - "Conceptualization"
@@ -20,12 +20,14 @@ affiliation:
 authornote: |
   Add complete departmental affiliations for each author here. Each new line herein must be indented, like this line.
 
-  Enter author note here.
+  Thank you!
 
 abstract: |
+  *500 words*
   Research has suggested that quality of housing is a social determinant of health and that residential stability is a factor for older adults's health (CITE). This report will look more specifically at the relationship between residential stability and child well-being. As housing is not gaurenteed in the United States it is important to understand the relationship between where children are living and their wellbeing at home and in school. 
   In this study we found that...
-  
+  DO I NEED TO BE USING SIMULATED????
+
   
 keywords          : "housing, residential stability, childhood wellbeing, health, social determinants of health"
 wordcount         : "X"
@@ -55,6 +57,10 @@ library("ggplot2")
 library("data.table")
 library("dplyr")
 library("bit64")
+if(!requireNamespace("tinytex", quietly = TRUE)) install.packages("tinytex")
+library("tinytex")
+install.packages("tidyverse")
+library("tidyverse")
 r_refs("r-references.bib")
 ```
 
@@ -72,15 +78,13 @@ pu <- fread(ds, sep = "|", select = c("ECLUB", "EEXPSCH", "EREPGRD", "ESPORT", "
 names(pu) <- toupper(names(pu))
 
 head(pu, 20)
-
-# creating objects to be inserted into the report 
-# omitting missing values from the data set
 dat <- na.omit(pu)
 
+# creating objects to be inserted into the report 
 # assigning variables new names
 cwb_1 <- (dat$ECLUB)
 
-# key cwb_2 negatively
+# recode cwb_2 to be keyed negatively
 cwb_2 <- (dat$EEXPSCH)
 recode(dat$EEXPSCH, '1'= 2, '2' = 1)
 cwb_2_r <- recode(cwb_2, '1'= 2, '2' = 1)
@@ -90,7 +94,7 @@ cwb_2_r
 table(cwb_2)
 table(cwb_2_r)
 
-# key cwb_3 negatively
+# recode cwb_3 to be keyed negatively
 cwb_3 <- (dat$EREPGRD)
 recode(dat$EREPGRD, '1' = 2, '2' = 1)
 cwb_3_r <- recode(dat$EREPGRD, '1' = 2, '2' = 1)
@@ -120,8 +124,6 @@ dat <- dat %>% dplyr::mutate(cwb_scale = rowMeans(pick(cwb_1, cwb_2_r, cwb_3_r, 
 mean(dat$cwb_scale)
 sd(dat$cwb_scale)
 
-
-
 # assigning varibale names for residential stability
 res_1 <- (dat$EEHC_PVTEN)
 res_1
@@ -133,23 +135,18 @@ table(res_2)
 
 # assigning variable names for demographic data
 dem_1 <- (dat$TAGE)
-dem_1
 dem_2 <- (dat$ERACE)
-dem_2
 dem_3 <- (dat$ESEX)
-dem_3
-
-
-
 
 ```
+## Present Study
+  The purpose of the present study was to 
 
-
-# Methods
+# Method
 The current study was not preregistered. Data and code are available on Github [*click here* ](https://github.com/libby-kramer/Residential_Instability_Project)
 Data retrieved from the 2024 Survey of Income and Program Participation <https://www.census.gov/programs-surveys/sipp/data/datasets/2024-data/2024.html>
 
-## Participants
+## Participants and Procedure
 ```{r demographics, include = FALSE}
 # average age of respondents 
 dem_1_mean <- mean(dem_1)
@@ -158,10 +155,37 @@ dem_1_mean
 # standard deviation of age
 dem_1_sd <- sd(dem_1)
 dem_1_sd
-
 ```
-The total sample in the current study consists of `r nrow(dat)`
 
+```{r demographic tables, include = FALSE}
+summary(dem_2)
+dem_2
+
+race_percent <- results_dplyr <- dat %>% 
+  group_by(ERACE) %>% 
+  summarise(Percentage = n()/nrow(dat)*100)
+
+
+apa_table(results_dplyr)
+
+results_sex <- dat %>% 
+  group_by(ESEX) %>% 
+  summarise(Percentage = n()/nrow(dat)*100)
+print(results_sex)
+```
+
+```{r tables, echo=FALSE}
+apa_table(results_dplyr)
+apa_table(results_sex)
+```
+
+FIX THIS WITH EMBEDDING VALUES
+The sample size after omitting the missing values, due to the vast amount of missing, was 6691. The average age of the respondents was (*M* = `mean(dem_1))` with a standard deviation of `dem_1_sd`. The participants were 89.8% female, 77.7% white, 10.5% Black, 7.90% Asian, and 3.48% reported as residual. This sample size has some significant bias around sex and race. There answer options for the demographics were very binary.
+
+## Measures
+
+### Childhood well-being scale
+### Residential Stability
 ## Material
 
 ## Procedure
@@ -183,7 +207,8 @@ apa_table(cwb_table,
              align = "l", digits = 2,
           note = "True or false questions keyed 1 as postive and 2 as negative")
 
-# I THINK THIS NEEDS TO BE CHANGED SO THAT THEY ARE BOTH IN THE SIMULATED DATA
+```
+
 cor.test(dat$cwb_scale, res_1, method = c("pearson"))
 
 ```
