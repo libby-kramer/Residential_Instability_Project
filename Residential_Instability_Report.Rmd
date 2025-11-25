@@ -57,8 +57,6 @@ library("ggplot2")
 library("data.table")
 library("dplyr")
 library("bit64")
-if(!requireNamespace("tinytex", quietly = TRUE)) install.packages("tinytex")
-library("tinytex")
 install.packages("tidyverse")
 library("tidyverse")
 r_refs("r-references.bib")
@@ -79,64 +77,72 @@ names(pu) <- toupper(names(pu))
 
 head(pu, 20)
 dat <- na.omit(pu)
+dat_sim <- read.csv("residential_stability_simulated_data_2025_11-17.csv")
+dat_sim
 
 # creating objects to be inserted into the report 
 # assigning variables new names
-cwb_1 <- (dat$ECLUB)
+cwb_1_sim <- (dat_sim$cwb_1_sim)
+
+
 
 # recode cwb_2 to be keyed negatively
-cwb_2 <- (dat$EEXPSCH)
-recode(dat$EEXPSCH, '1'= 2, '2' = 1)
-cwb_2_r <- recode(cwb_2, '1'= 2, '2' = 1)
-cwb_2_r
+cwb_2_sim <- (dat_sim$cwb_2_sim)
+recode(dat_sim$cwb_2_sim, '1'= 2, '2' = 1)
+cwb_2_sim_r <- recode(dat_sim$cwb_2_sim, '1'= 2, '2' = 1)
+cwb_2_sim_r
 
 # checks that cwb_2 was reverse coded correctly
-table(cwb_2)
-table(cwb_2_r)
+table(cwb_2_sim_r)
+table(cwb_2_sim)
 
 # recode cwb_3 to be keyed negatively
-cwb_3 <- (dat$EREPGRD)
-recode(dat$EREPGRD, '1' = 2, '2' = 1)
-cwb_3_r <- recode(dat$EREPGRD, '1' = 2, '2' = 1)
-cwb_3_r
+cwb_3_sim <- (dat_sim$cwb_3_sim)
+recode(dat_sim$cwb_3_sim, '1' = 2, '2' = 1)
+cwb_3_sim_r <- recode(dat_sim$cwb_3_sim, '1' = 2, '2' = 1)
+cwb_3_sim_r
 
 # check that cwb_3 was reverse coded correctly 
-table(cwb_3)
-table(cwb_3_r)
+table(cwb_3_sim)
+table(cwb_3_sim_r)
 
 cwb_4 <- (dat$ESPORT)
+cwb_4_sim <- (dat_sim$cwb_4_sim)
+cwb_4_sim
 
 # mean scores for cwb items
-cwb_1_mean <- mean(cwb_1)
-cwb_2_r_mean <- mean(cwb_2_r)
-cwb_3_r_mean <- mean(cwb_3_r)
-cwb_4_mean <- mean (cwb_4)
+cwb_1_mean <- mean(cwb_1_sim)
+cwb_2_r_mean <- mean(cwb_2_sim_r)
+cwb_3_r_mean <- mean(cwb_3_sim_r)
+cwb_4_mean <- mean (cwb_4_sim)
 
 # standard deviation for cwb items
-cwb_1_sd <- sd(cwb_1)
-cwb_2_r_sd <- sd(cwb_2_r)
-cwb_3_r_sd <- sd(cwb_3_r)
-cwb_4_sd <- sd(cwb_4)
+cwb_1_sd <- sd(cwb_1_sim)
+cwb_2_r_sd <- sd(cwb_2_sim_r)
+cwb_3_r_sd <- sd(cwb_3_sim_r)
+cwb_4_sd <- sd(cwb_4_sim)
 
 
 # create new row of the cwb_scale based on the mean scores of all of the cwb variables
-dat <- dat %>% dplyr::mutate(cwb_scale = rowMeans(pick(cwb_1, cwb_2_r, cwb_3_r, cwb_4)))
-mean(dat$cwb_scale)
-sd(dat$cwb_scale)
+### ERROR HERE
+cwb_scale_sim <- (dat_sim$cwb_scale)
 
-# assigning varibale names for residential stability
-res_1 <- (dat$EEHC_PVTEN)
-res_1
-table(res_1)
+mean(dat$cwb_scale_sim)
+sd(dat$cwb_scale_sim)
 
-res_2 <- (dat$EEHC_WHY)
-res_2
-table(res_2)
+# assigning variable names for residential stability
+res_1_sim <- (dat_sim$res_1_sim)
+res_1_sim
+table(res_1_sim)
+
+res_2_sim <- (dat_sim$res_2_sim)
+res_2_sim
+table(res_2_sim)
 
 # assigning variable names for demographic data
-dem_1 <- (dat$TAGE)
-dem_2 <- (dat$ERACE)
-dem_3 <- (dat$ESEX)
+dem_1_sim <- (dat_sim$dem_1_sim)
+dem_2_sim <- (dat_sim$dem_2_sim)
+dem_3_sim <- (dat_sim$dem_3_sim)
 
 ```
 ## Present Study
@@ -149,27 +155,27 @@ Data retrieved from the 2024 Survey of Income and Program Participation <https:/
 ## Participants and Procedure
 ```{r demographics, include = FALSE}
 # average age of respondents 
-dem_1_mean <- mean(dem_1)
+dem_1_mean <- mean(dem_1_sim)
 dem_1_mean
 
 # standard deviation of age
-dem_1_sd <- sd(dem_1)
+dem_1_sd <- sd(dem_1_sim)
 dem_1_sd
 ```
 
 ```{r demographic tables, include = FALSE}
-summary(dem_2)
-dem_2
+summary(dem_2_sim)
+dem_2_sim
 
-race_percent <- results_dplyr <- dat %>% 
-  group_by(ERACE) %>% 
+race_percent <- results_dplyr <- dat_sim %>% 
+  group_by(dem_2_sim) %>% 
   summarise(Percentage = n()/nrow(dat)*100)
 
 
 apa_table(results_dplyr)
 
-results_sex <- dat %>% 
-  group_by(ESEX) %>% 
+results_sex <- dat_sim %>% 
+  group_by(dem_3_sim) %>% 
   summarise(Percentage = n()/nrow(dat)*100)
 print(results_sex)
 ```
@@ -209,7 +215,7 @@ apa_table(cwb_table,
 
 ```
 
-cor.test(dat$cwb_scale, res_1, method = c("pearson"))
+cor.test(dat_sim$cwb_scale_sim, res_1_sim, method = c("pearson"))
 
 ```
 
