@@ -91,3 +91,4 @@ dat_sim %>% dplyr::select(cwb_1_sim) %>% summarytools::freq()
 dat_sim
 
 write.csv(dat_sim, "residential_stability_simulated_data_2025_11-17.csv", row.names = FALSE)
+
