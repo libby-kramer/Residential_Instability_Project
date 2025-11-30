@@ -81,7 +81,6 @@ dat_sim <- missMethods::delete_MCAR(dat_sim, .40, "cwb_4_sim")
 
 dat_sim <- missMethods::delete_MCAR(dat_sim, .40, "res_1_sim")
 dat_sim <- missMethods::delete_MCAR(dat_sim, .40, "res_2_sim")
-
 dat_sim <- missMethods::delete_MCAR(dat_sim, .40, "dem_1_sim")
 dat_sim <- missMethods::delete_MCAR(dat_sim, .40, "dem_2_sim")
 dat_sim <- missMethods::delete_MCAR(dat_sim, .40, "dem_3_sim")
@@ -90,5 +89,5 @@ dat_sim <- missMethods::delete_MCAR(dat_sim, .40, "dem_3_sim")
 dat_sim %>% dplyr::select(cwb_1_sim) %>% summarytools::freq()
 dat_sim
 
-write.csv(dat_sim, "residential_stability_simulated_data_2025_11-17.csv", row.names = FALSE)
+write.csv(dat_sim, "residential_instability_simulated_data_2025_11-17.csv", row.names = FALSE)
 
