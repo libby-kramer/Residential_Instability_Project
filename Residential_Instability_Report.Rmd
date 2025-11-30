@@ -30,7 +30,7 @@ abstract: |
 keywords          : "housing, residential stability, childhood wellbeing, health, social determinants of health"
 wordcount         : "X"
 
-bibliography      : "r-references.bib"
+
 
 floatsintext      : yes
 linenumbers       : no
@@ -43,7 +43,7 @@ footnotelist      : no
 
 classoption       : "man"
 output            : papaja::apa6_pdf
-bibliography: references.bib
+bibliography      : "r-references.bib"
 ---
 
 ```{r setup, include = FALSE}
@@ -56,10 +56,9 @@ library("ggplot2")
 library("data.table")
 library("dplyr")
 library("bit64")
-library("tidyverse")
-library("tinytex")
 
 r_refs("r-references.bib")
+
 ```
 
 ```{r analysis-preferences}
@@ -252,7 +251,7 @@ apa_table(cwb_table,
 
 
 ggplot(dat_sim, aes(cwb_scale_sim)) +
-  geom_histogram(binwidth = 0.25, fill = "blue", color = "green")+
+  geom_histogram(binwidth = 0.25, fill = "lightblue", color = "white") +
   theme_apa() +
   labs(title = "Childhood Well-Being Scale",
        x = "Childhood Well-Being Score",
@@ -272,6 +271,7 @@ t_test
 install.packages("lsr")
 library(lsr)
 effect_size <- cohensD(dat_sim$res_1_sim, dat_sim$cwb_scale_sim)
+effect_size
 
 ```
 
@@ -282,9 +282,5 @@ These results show that the type of housing a child is living in has a significa
 # References
 
 ::: {#refs custom-style="Bibliography"}
+@kantz2023; @sociald; @bureau; @boch2021a
 :::
-
-[@boch2021][@kantz2023][@sociald][@bureau]
-
-
-
