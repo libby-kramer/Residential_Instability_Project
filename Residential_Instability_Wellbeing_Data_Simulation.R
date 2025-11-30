@@ -57,11 +57,6 @@ table(dat_sim$res_1)
 dat_sim$res_2_sim <- sample(1:16, size = 6691, replace = TRUE, prob = c(.0625, .0625, .0625, .0625, .0625, .0625, .0625, .0625, .0625, .0625, .0625, .0625, .0625, .0625, .0625, .0625))
 table(dat_sim$res_2)
 
-dem_1 <- (dat$TAGE)
-dem_2 <- (dat$ERACE)
-dem_3 <- (dat$ESEX)
-table(dem_2)
-
 dat_sim$dem_1_sim <- sample(0:90, size = 6691, replace = TRUE)
 table(dat_sim$dem_1_sim)
 
@@ -69,7 +64,7 @@ dat_sim$dem_2_sim <- sample(1:4, size = 6691, replace = TRUE, prob = c(.75, .10,
 table(dat_sim$dem_2_sim)
 
 dat_sim$dem_3_sim <- sample(1:2, size = 6691, replace = TRUE, prob = c(.05, .95))
-table(dem_3)
+table(dem_3_sim)
 table(dat_sim$dem_3_sim)
 
 # include missing data in results
