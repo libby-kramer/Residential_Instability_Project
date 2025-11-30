@@ -204,11 +204,9 @@
 \date{}
 
 
-\shorttitle{Residential Stability}
+\shorttitle{Residential Instability}
 
 \authornote{
-
-Add complete departmental affiliations for each author here. Each new line herein must be indented, like this line.
 
 Thank you!
 
@@ -221,10 +219,9 @@ Correspondence concerning this article should be addressed to Libby Kramer, Elli
 \affiliation{\vspace{0.5cm}\textsuperscript{1} University of Minnesota}
 
 \abstract{%
-\emph{500 words}
-The current research suggestes that the quality of housing is a social determinant of health, and residential stability is a factor for older adults's health (CITE). This report will look more specifically at the relationship between residential stability and childhood well-being, asking what impact residential stability has on wellbeing? This research can guide how we approach housing, espeically for parents. As housing is not gaurenteed in the United States evidence on the impacts of this can be apart of ensuring children all have a stable place to live.
+The current research suggestes that the quality of housing is a social determinant of health. Social determinants have become a more focal point of public health as more understanding grows about the impacts of social forces on our autonomy to access health. Additionally, using Survey of Income and Program Participants Kantz et al.~(2023) found residential stability to be a factor for low income older adults's health. The authors of this paper came to the conclusion that housing assistance is falling short amoung the demographic they focused on. This report will look more specifically at the relationship between residential stability and childhood well-being, asking what impact residential stability has on wellbeing? SIPP data has also been used to look at quality of housing and health of children, but not specifically residential stability(Boch et al.~2021). This article found that poorer housing quality was associated with poorer health for child. By looking at residence and health the research can guide how we approach housing policy specifically for families. As housing is not gaurenteed in the United States evidence on the impacts of this can be apart of ensuring children all have a stable place to live. The purpose of the present study is to better understand what is affecting childhood well-being and if frequent moving is contributing to their well-being.
 
-In this study we found that\ldots{}
+The results of this study were consistent with the other finds in the research around where people are living and how that is connected to their health.
 }
 
 
@@ -232,16 +229,13 @@ In this study we found that\ldots{}
 \begin{document}
 \maketitle
 
-\subsection{Present Study}\label{present-study}
-
-The purpose of the present study is to better understand what is affecting childhood well-being and if frequent moving is contributing to their well-being.
-
 \section{Method}\label{method}
 
-The current study was not preregistered. Data and code are available on Github \href{https://github.com/libby-kramer/Residential_Instability_Project}{\emph{click here}}
-Data retrieved from the 2024 Survey of Income and Program Participation \url{https://www.census.gov/programs-surveys/sipp/data/datasets/2024-data/2024.html}
+The current study was not preregistered. Data and code are available on Github \href{https://github.com/libby-kramer/Residential_Instability_Project}{\emph{click here}} Data retrieved from the 2024 Survey of Income and Program Participation \url{https://www.census.gov/programs-surveys/sipp/data/datasets/2024-data/2024.html}
 
 \subsection{Participants and Procedure}\label{participants-and-procedure}
+
+The sample size after omitting the missing values, due to the vast amount of missing, was 6691. The average age of the respondents was 45.01 with a standard deviation of 26.68. The participants were 89.8\% female, 77.7\% white, 10.5\% Black, 7.90\% Asian, and 3.48\% were reported as residual. This sample size has some significant bias around sex and race. There answer options for the demographics were very binary and lacking in self-description options.
 
 \begin{table}[tbp]
 
@@ -254,10 +248,10 @@ Data retrieved from the 2024 Survey of Income and Program Participation \url{htt
 \toprule
 dem\_2\_sim & \multicolumn{1}{c}{Percentage}\\
 \midrule
-1 & 44.88\\
-2 & 6.11\\
-3 & 6.11\\
-4 & 2.90\\
+1 & 45.43\\
+2 & 5.75\\
+3 & 5.66\\
+4 & 3.15\\
 NA & 39.99\\
 \bottomrule
 \end{tabular}
@@ -278,8 +272,8 @@ NA & 39.99\\
 \toprule
 dem\_3\_sim & \multicolumn{1}{c}{Percentage}\\
 \midrule
-1 & 2.96\\
-2 & 57.05\\
+1 & 3.06\\
+2 & 56.94\\
 NA & 39.99\\
 \bottomrule
 \end{tabular}
@@ -289,25 +283,27 @@ NA & 39.99\\
 
 \end{table}
 
-The sample size after omitting the missing values, due to the vast amount of missing, was 6691. The average age of the respondents was 44.39 with a standard deviation of 26.20. The participants were 89.8\% female, 77.7\% white, 10.5\% Black, 7.90\% Asian, and 3.48\% reported as residual. This sample size has some significant bias around sex and race. There answer options for the demographics were very binary and lacking in self-description options.
-
 \subsection{Measures}\label{measures}
 
 \subsubsection{Childhood well-being scale}\label{childhood-well-being-scale}
 
-The childhood well-being scale was created using select objects from the SIPP section on child well-being. For this report there were only four true or false questions used to create the cwb\_scale which stands for the childhood well-being scale. This was also reported data from the parents about children at a variety of ages. The Cronbach's alpha for this scale was 0.04. This is a very low alpha, probably due to the few number of items and the randomness in selection of the items.
+The childhood well-being scale was created using select objects from the SIPP section on child well-being. For this report there were only four true or false questions used to create the cwb\_scale which stands for the childhood well-being scale. This was also reported data from the parents about children at a variety of ages. The Cronbach's alpha for this scale was -0.02. This is a very low alpha, probably due to the few number of items and the randomness in selection of the items.
 
 \subsubsection{Residential Stability}\label{residential-stability}
 
 The residential stability measures are two questions from the residential section of the SIPP questionnaire. The questions ask about reason for moving and also if they were renting, owned, or were occupying without payment.
 
+The residential stability measures were tested with a Cronbach's alpha to measure internal consistency of the measures. For residential stability the alpha value was 0.02. This is very low for internal consistency and demonstrates the lack of reliability when only using two measures to determine a complex idea like the amount of residential stability in someone's life.
+
 \subsection{Material}\label{material}
 
 \subsection{Procedure}\label{procedure}
 
+For the analysis
+
 \subsection{Data analysis}\label{data-analysis}
 
-We used R (Version 4.5.0; R Core Team, 2025) and the R-packages \emph{bit} (Version 4.6.0; Chirico \& Oehlschlägel, 2025a, 2025b), \emph{bit64} (Version 4.6.0.1; Chirico \& Oehlschlägel, 2025b), \emph{data.table} (Version 1.17.8; Barrett et al., 2025), \emph{dplyr} (Version 1.1.4; Wickham, François, Henry, Müller, \& Vaughan, 2023), \emph{forcats} (Version 1.0.1; Wickham, 2025), \emph{ggplot2} (Version 3.5.2; Wickham, 2016), \emph{groundhog} (Version 3.2.3; Simonsohn \& Gruson, 2025), \emph{labelled} (Version 2.15.0; Larmarange, 2025), \emph{lubridate} (Version 1.9.4; Grolemund \& Wickham, 2011), \emph{papaja} (Version 0.1.4; Aust \& Barth, 2025), \emph{psych} (Version 2.5.6; William Revelle, 2025), \emph{purrr} (Version 1.0.4; Wickham \& Henry, 2025), \emph{readr} (Version 2.1.5; Wickham, Hester, \& Bryan, 2024), \emph{stringr} (Version 1.5.1; Wickham, 2023), \emph{tibble} (Version 3.2.1; Müller \& Wickham, 2023), \emph{tidyr} (Version 1.3.1; Wickham, Vaughan, \& Girlich, 2024), \emph{tidyverse} (Version 2.0.0; Wickham et al., 2019), and \emph{tinylabels} (Version 0.2.5; Barth, 2025) for all our analyses.
+We used R (Version 4.5.0; R Core Team, 2025) and the R-packages \emph{bit} (Version 4.6.0; Chirico \& Oehlschlägel, 2025a, 2025b), \emph{bit64} (Version 4.6.0.1; Chirico \& Oehlschlägel, 2025b), \emph{data.table} (Version 1.17.8; Barrett et al., 2025), \emph{dplyr} (Version 1.1.4; Wickham, François, Henry, Müller, \& Vaughan, 2023), \emph{forcats} (Version 1.0.1; Wickham, 2025), \emph{ggplot2} (Version 3.5.2; Wickham, 2016), \emph{groundhog} (Version 3.2.3; Simonsohn \& Gruson, 2025), \emph{labelled} (Version 2.15.0; Larmarange, 2025), \emph{lubridate} (Version 1.9.4; Grolemund \& Wickham, 2011), \emph{missMethods} (Version 0.4.0; Rockel, 2022), \emph{papaja} (Version 0.1.4; Aust \& Barth, 2025), \emph{psych} (Version 2.5.6; William Revelle, 2025), \emph{purrr} (Version 1.0.4; Wickham \& Henry, 2025), \emph{readr} (Version 2.1.5; Wickham, Hester, \& Bryan, 2024), \emph{stringr} (Version 1.5.1; Wickham, 2023), \emph{tibble} (Version 3.2.1; Müller \& Wickham, 2023), \emph{tidyr} (Version 1.3.1; Wickham, Vaughan, \& Girlich, 2024), \emph{tidyverse} (Version 2.0.0; Wickham et al., 2019), and \emph{tinylabels} (Version 0.2.5; Barth, 2025) for all our analyses.
 
 \section{Results}\label{results}
 
@@ -316,16 +312,16 @@ We used R (Version 4.5.0; R Core Team, 2025) and the R-packages \emph{bit} (Vers
 \begin{center}
 \begin{threeparttable}
 
-\caption{\label{tab:descriptive table and plots}Descriptivse for Childhood Wellbeing Scale Items}
+\caption{\label{tab:descriptive table and plots}Descriptives for Childhood Wellbeing Scale Items}
 
 \begin{tabular}{lll}
 \toprule
 Item & \multicolumn{1}{c}{Mean} & \multicolumn{1}{c}{SD}\\
 \midrule
-CWB Item 1 & 1.61 & 0.49\\
-CWB Item 2 & 1.91 & 0.29\\
-CWB Item 3 & 1.95 & 0.22\\
-CWB Item 4 & 1.49 & 0.50\\
+CWB Item 1 & 1.60 & 0.49\\
+CWB Item 2 & 1.90 & 0.31\\
+CWB Item 3 & 1.95 & 0.21\\
+CWB Item 4 & 1.50 & 0.50\\
 \bottomrule
 \addlinespace
 \end{tabular}
@@ -340,14 +336,13 @@ CWB Item 4 & 1.49 & 0.50\\
 \end{table}
 
 \begin{verbatim}
-## Warning: Removed 4275 rows containing non-finite outside the scale range
+## Warning: Removed 5803 rows containing non-finite outside the scale range
 ## (`stat_bin()`).
 \end{verbatim}
 
 \includegraphics{Residential_Instability_Report_files/figure-latex/descriptive table and plots-1.pdf}
 
-The p-value when comparing residential stability marker 1 and the cwb\_scale was very small, c(t = 11.479617716626), c(df = 4205), 4.66323062075316e-30, c(0.480659060278834, 0.678649781564255), c(\texttt{mean\ of\ x} = 1.89215442092154, \texttt{mean\ of\ y} = 1.3125), c(\texttt{difference\ in\ means} = 0), 0.0504942268314413, two.sided, Two Sample t-test, dat\_sim\(res_1_sim and dat_sim\)cwb\_scale\_sim.
-\newpage
+The p-value when comparing residential stability marker 1 and the cwb\_scale was very small, r t\_test. \newpage
 
 \section{References}\label{references}
 
@@ -380,6 +375,9 @@ Müller, K., \& Wickham, H. (2023). \emph{Tibble: Simple data frames}. \url{http
 \bibitem[\citeproctext]{ref-R-base}
 R Core Team. (2025). \emph{R: A language and environment for statistical computing}. Vienna, Austria: R Foundation for Statistical Computing. Retrieved from \url{https://www.R-project.org/}
 
+\bibitem[\citeproctext]{ref-R-missMethods}
+Rockel, T. (2022). \emph{missMethods: Methods for missing data}. \url{https://doi.org/10.32614/CRAN.package.missMethods}
+
 \bibitem[\citeproctext]{ref-R-groundhog}
 Simonsohn, U., \& Gruson, H. (2025). \emph{Groundhog: Version-control for CRAN, GitHub, and GitLab packages}. \url{https://doi.org/10.32614/CRAN.package.groundhog}
 
@@ -411,6 +409,8 @@ Wickham, H., Vaughan, D., \& Girlich, M. (2024). \emph{Tidyr: Tidy messy data}. 
 William Revelle. (2025). \emph{Psych: Procedures for psychological, psychometric, and personality research}. Evanston, Illinois: Northwestern University. Retrieved from \url{https://CRAN.R-project.org/package=psych}
 
 \end{CSLReferences}
+
+{[}(\textbf{boch2021?}){]}(\textbf{kantz2023?})(\textbf{sociald?})
 
 
 \end{document}
