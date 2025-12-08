@@ -1,0 +1,308 @@
+---
+title             : "Residential Instability and Childhood Wellbeing"
+shorttitle        : "Residential Instability"
+
+author: 
+  - name          : "Libby Kramer"
+    affiliation   : "1"
+    corresponding : yes    # Define only one corresponding author
+    address       : "Elliott Halll 75 E River Parkway, Minneapolis MN"
+    email         : "krame937@umn.edu"
+    role: # Contributorship roles (e.g., CRediT, https://credit.niso.org/)
+      - "Conceptualization"
+      - "Writing - Original Draft Preparation"
+      - "Writing - Review & Editing"
+
+affiliation:
+  - id            : "1"
+    institution   : "University of Minnesota"
+
+authornote: |
+  Thank you!
+
+abstract: |
+
+ This study looks at the relationship between the residential stability and child well-being using data from the Survey of Income and Program Participants. This data is from the United States and is conducted through the Census Bureau. This report looks at 6691 participants and compares their score on the child well-being scale to two residential stability measures. Using a t-test and Cohen's D to measure the p-value and get the effect size.  The results of this study were consistent with the other finds in the research around where people are living and how that is connected to their health. There is strong evidence that suggests that the stability of a child's residence contributes to their well-being score. There should be more reseearch done. 
+
+  
+keywords          : "housing, residential stability, childhood wellbeing, health, social determinants of health"
+wordcount         : "X"
+
+bibliography      : ["r-references.bib", "references.bib"]
+
+floatsintext      : yes
+linenumbers       : no
+draft             : no
+mask              : no
+
+figurelist        : no
+tablelist         : no
+footnotelist      : no
+
+classoption       : "man"
+output            : papaja::apa6_docx
+
+---
+
+```{r setup, include = FALSE}
+library("papaja")
+library("groundhog")
+library("dplyr")
+library("psych")
+library("labelled")
+library("ggplot2")
+library("data.table")
+library("dplyr")
+library("bit64")
+
+r_refs("r-references.bib")
+```
+
+```{r analysis-preferences}
+# Seed for random number generation
+set.seed(0628)
+knitr::opts_chunk$set(cache.extra = knitr::rand_seed)
+```
+
+```{r data setup, include = FALSE}
+
+# read in simulated data
+dat_sim <- read.csv("data/residential_stability_simulated_data_2025_11-17.csv")
+dat_sim
+
+# creating objects to be inserted into the report 
+# assigning variables new names
+cwb_1_sim <- (dat_sim$cwb_1_sim)
+
+# re-code cwb_2 to be keyed negatively
+cwb_2_sim <- (dat_sim$cwb_2_sim)
+recode(dat_sim$cwb_2_sim, '1'= 2, '2' = 1)
+cwb_2_sim_r <- recode(dat_sim$cwb_2_sim, '1'= 2, '2' = 1)
+cwb_2_sim_r
+# add recoded to dat_sim
+dat_sim$cwb_2_sim_r <- c(cwb_2_sim_r)
+
+
+# checks that cwb_2 was reverse coded correctly
+table(cwb_2_sim_r)
+table(cwb_2_sim)
+
+# re-code cwb_3 to be keyed negatively
+cwb_3_sim <- (dat_sim$cwb_3_sim)
+recode(dat_sim$cwb_3_sim, '1' = 2, '2' = 1)
+cwb_3_sim_r <- recode(dat_sim$cwb_3_sim, '1' = 2, '2' = 1)
+cwb_3_sim_r
+dat_sim$cwb_3_sim_r <- c(cwb_3_sim_r)
+
+# check that cwb_3 was reverse coded correctly 
+table(cwb_3_sim)
+table(cwb_3_sim_r)
+
+cwb_4_sim <- (dat_sim$cwb_4_sim)
+cwb_4_sim
+
+# mean scores for cwb items
+cwb_1_mean <- mean(dat_sim$cwb_1_sim, na.rm = TRUE)
+cwb_2_r_mean <- mean(cwb_2_sim_r, na.rm = TRUE)
+cwb_3_r_mean <- mean(cwb_3_sim_r, na.rm = TRUE)
+cwb_4_mean <- mean(dat_sim$cwb_4_sim, na.rm = TRUE)
+
+# standard deviation for cwb items
+cwb_1_sd <- sd(dat_sim$cwb_1_sim, na.rm = TRUE)
+cwb_2_r_sd <- sd(cwb_2_sim_r, na.rm = TRUE)
+cwb_3_r_sd <- sd(cwb_3_sim_r, na.rm = TRUE)
+cwb_4_sd <- sd(dat_sim$cwb_4_sim, na.rm = TRUE)
+
+
+# create new row of the cwb scale based on the mean scores of all of the cwb variables
+simulated <- dat_sim %>% dplyr::mutate(cwb_scale = rowMeans(pick(cwb_1_sim, cwb_2_sim, cwb_3_sim, cwb_4_sim)))
+
+mean(simulated$cwb_scale, na.rm = TRUE)
+
+### adding cwb_scale to the simulated
+dat_sim$cwb_scale_sim <- c(simulated$cwb_scale)
+
+cwb_scale_mean <- mean(simulated$cwb_scale, na.rm = TRUE)
+cwb_scale_mean
+cwb_scale_sd <- sd(simulated$cwb_scale, na.rm = TRUE)
+cwb_scale_sd
+
+# assigning variable names for residential stability
+res_1_sim <- (dat_sim$res_1_sim)
+res_1_sim
+table(res_1_sim)
+res_1_sim_mean <- mean(dat_sim$res_1_sim)
+
+res_2_sim <- (dat_sim$res_2_sim)
+res_2_sim
+table(res_2_sim)
+
+# assigning variable names for demographic data
+dem_1_sim <- (dat_sim$dem_1_sim)
+dem_2_sim <- (dat_sim$dem_2_sim)
+dem_3_sim <- (dat_sim$dem_3_sim)
+
+# keying positive and negative events for res_2 (reason for moving)
+res_2_sim_r <- recode(dat_sim$res_2_sim, '1' = 1.5, '2' = 1, '3' = 1.5, '4' = 1, '5' = 2, '6' = 1, '7' = 1, '8' = 1, '9' = 1, '10' = 1, '11' = 2, '12' = 1.5, '13' = 2, '14' = 2, '15' = 1, '16' = 1.5)
+dat_sim$res_2_sim_r <- c(res_2_sim_r)
+
+
+```
+# Introduction
+The current research suggests that the quality of housing is a social determinant of health. Social determinants have become a more focal point of public health as more understanding grows about the impacts of social forces on our autonomy to access health. Additionally, using Survey of Income and Program Participants, @kantz2023 found residential stability to be a factor for low income older adult's health. The authors of this paper came to the conclusion that housing assistance is falling short among the demographic they focused on. This report will look more specifically at the relationship between residential stability and childhood well-being, asking what impact residential stability has on well being? SIPP data has also been used to look at quality of housing and health of children, but not specifically residential stability @boch2021. This article found that poorer housing quality was associated with poorer health for child. By looking at residence and health the research can guide how we approach housing policy specifically for families. As housing is not guaranteed in the United States evidence on the impacts of this can be apart of ensuring children all have a stable place to live. The purpose of the present study is to better understand what is affecting childhood well-being and if frequent moving is contributing to their well-being.
+  
+# Method
+
+The current study was not preregistered. Data and code are available on Github [*click here*](https://github.com/libby-kramer/Residential_Instability_Project) Data retrieved from the 2024 Survey of Income and Program Participation (@bureau). <https://www.census.gov/programs-surveys/sipp/data/datasets/2024-data/2024.html>
+
+The data used is publicly available and de-identified so the ethical considerations for using this data were low risk.
+
+## Participants and Procedure
+
+```{r demographics, include = FALSE}
+# average age of respondents 
+dem_1_mean <- mean(dat_sim$dem_1_sim, na.rm = TRUE)
+dem_1_mean
+summary(dem_1_sim)
+
+# standard deviation of age
+dem_1_sd <- sd(dat_sim$dem_1_sim, na.rm = TRUE)
+dem_1_sd
+```
+
+```{r demographic tables, include = FALSE}
+summary(dat_sim$dem_2_sim)
+
+table(dat_sim$dem_2_sim)
+ 
+race_percent <- dat_sim %>% 
+ group_by(dem_2_sim) %>% 
+ summarise(Percentage = n()/nrow(dat_sim)*100)
+race_percent
+
+
+race_table <- dplyr::tribble(
+    ~Race, ~Percentage,
+    "White", "44.88%",
+    "Black", "6.11%",
+    "Asian", "6.11%",
+    "Residual", "2.90%",
+    "NA", "39.99%")
+
+sex_percent <- dat_sim %>% 
+  group_by(dem_3_sim) %>% 
+  summarise(Percentage = n()/nrow(dat_sim)*100)
+sex_percent
+
+
+```
+
+The sample size after omitting the missing values, due to the vast amount of missing, was `r nrow(dat_sim)`. The average age of the respondents was `r dem_1_mean` with a standard deviation of `r dem_1_sd`. The participant's race are reported in the table below. The sample was 57.05% women, 2.96% men, with 39.99% NA values.This sample size has some significant bias around sex and race. There answer options for the demographics were very binary and lacking in self-description options.
+
+```{r tables, echo=FALSE}
+apa_table(race_table)
+```
+
+## Measures
+
+### Childhood well-being scale
+
+```{r alpha, include = FALSE}
+
+alpha_cwb <-  psych::alpha(dplyr::select(dat_sim, "cwb_1_sim", "cwb_2_sim_r", "cwb_3_sim_r", "cwb_4_sim"))
+
+# pull out just the alpha and save as object to insert into text
+
+alpha_cwb <- alpha_cwb$total$std.alpha
+alpha_cwb
+
+```
+
+Using simulated data this report analysised the relationship between childhood well-being and residential stability. The childhood well-being scale was created using select objects from the SIPP section on child well-being. For this report there were only four true or false questions used to create the cwb_scale which stands for the childhood well-being scale. This was also reported data from the parents about children at a variety of ages. The Cronbach's alpha for this scale was `r alpha_cwb`. This is a very low alpha, probably due to the few number of items and the randomness in selection of the items.
+
+### Residential Stability
+
+The residential stability measures are two questions from the residential section of the SIPP questionnaire. The questions ask about reason for moving and also if they were renting, owned, or were occupying without payment.
+
+```{r residential alpha, include = FALSE}
+alpha_res <-  psych::alpha(dplyr::select(dat_sim, "res_1_sim", "res_2_sim_r"))
+
+# pull out just the alpha and save as object to insert into text
+
+alpha_res <- alpha_res$total$std.alpha
+alpha_res
+```
+
+The residential stability measures were tested with a Cronbach's alpha to measure internal consistency of the measures. For residential stability the alpha value was `r alpha_res`. This is very low for internal consistency and demonstrates the lack of reliability when only using two measures to determine a complex idea like the amount of residential stability in someone's life.
+
+
+## Material
+The childhood well-being scale was made up of four different questions. The first variable, cwb_1, asks about child participation in any clubs or organizations after school. The second variable, cwb_2, asked parents to report on if their child had ever been suspended or expelled from school. The third varibale, cwb_3, was in regards to if the child had ever repeated a grade or been held back. The last variable, cwb_4 was in regards to if the child played on a sports team. All of these varibales were yes or no. The cwb_2 and cwb_3 were both reverse coded.
+
+The first residential stability questions asked about the type of occupancy, owning, renting, or occupying without pay. The second residential question was in regards to reason for moving with 16 potential answers. These are: 1 Change in marital/relationship status 2 To move into own apartment or house 3 Other family-related reason 4 New job or job transfer 5 To look for work or lost job 6 To be closer to work or school 7 Other job-related reason 8 Wanted to own home, not rent 9 Wanted a better quality apartment or house 10 Wanted a better neighborhood 11 Cheaper housing 12 Other housing-/neighborhood-related reason 13 Disaster loss (fire, flood, hurricane, etc.) 14 Eviction/foreclosure 15 Always lived here (never moved) 16 Other reason (specify).
+
+The demographic questions included were age, race, and sex. The answer options were non-specific and did not allow for self-report.
+
+## Procedure
+The SIPP dataset is a longitudinal study that is collected through surveys. The methodology includes interviews as well as paper surveys that are mailed to participants houses. They use the Master Address File which is updated through the United States Postal Service. The Census Bureau also completes two rounds of sampling, the first one is for primary sample units and the selection of addresses.
+
+## Data analysis
+
+We used `r cite_r("r-references.bib")` for all our analyses.
+
+# Results
+
+```{r descriptive table and plots, echo=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+cwb_table <- dplyr::tribble(
+    ~Item, ~Mean, ~SD,
+    "CWB Item 1", cwb_1_mean,  cwb_1_sd,
+    "CWB Item 2", cwb_2_r_mean,  cwb_2_r_sd,
+    "CWB Item 3", cwb_3_r_mean,  cwb_3_r_sd,
+    "CWB Item 4", cwb_4_mean,  cwb_4_sd)
+
+apa_table(cwb_table, 
+             caption = "Descriptives for Childhood Wellbeing Scale Items",
+             align = "l", digits = 2,
+          note = "True or false questions keyed 1 as postive and 2 as negative")
+
+```
+
+```{r plot, echo=FALSE}
+ggplot(dat_sim, aes(cwb_scale_sim)) +
+  geom_histogram(binwidth = 0.25, fill = "lightblue", color = "white") +
+  theme_apa() +
+  labs(title = "Childhood Well-Being Scale",
+       x = "Childhood Well-Being Score",
+       y = "Frequency")
+
+```
+
+```{r p-value and effect size, include = FALSE}
+# t.test(x = cwb_scale_mean, y = res_1_sim_mean,
+      # alternative = c("two.sided"),
+      # mu = 6691, paired = TRUE, var.equal = FALSE,
+      # conf.level = 0.95)
+
+t_test <- t.test(dat_sim$res_1_sim, dat_sim$cwb_scale_sim, paired = FALSE, alternative = "two.sided", var.equal = TRUE)
+t_test
+
+t_cwb <- t_test$statistic
+p_cwb <- t_test$p.value
+
+install.packages("lsr")
+library(lsr)
+effect_size <- cohensD(dat_sim$res_1_sim, dat_sim$cwb_scale_sim)
+effect_size
+
+```
+
+The p-value when comparing residential stability marker 1 and the cwb_scale was very small, `r printp(p_cwb)`. This compared the child well-being score to if the child was living in a home that was owned, rented, or if they were not paying. Since the p-value was significant I also ran a Cohen's D test to measure the effect size. The Cohen's D was `r effect_size`. This value tells us that the impact of the type of housing was responsible for 90% of the variability in child well-being score.
+
+These results show that the type of housing a child is living in has a significant effect on their well-being. This demonstrates residential stability as renting or not paying is less stable than owning the home. Further research with more robust analysis needs to be done.  \newpage
+
+# References
+
+::: {#refs custom-style="Bibliography"}
+:::
+
