@@ -63,9 +63,16 @@ set.seed(0628)
 knitr::opts_chunk$set(cache.extra = knitr::rand_seed)
 ```
 
+```{r set working directory, include = FALSE}
+knitr::opts_knit$set(root.dir = ("Residential_Instability_Project"))
+
+```
+
+
 ```{r data setup, include = FALSE}
 
 # read in simulated data
+
 dat_sim <- read.csv("data/residential_stability_simulated_data_2025_11-17.csv")
 dat_sim
 
