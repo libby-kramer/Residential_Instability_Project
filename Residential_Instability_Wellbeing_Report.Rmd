@@ -15,10 +15,10 @@ author:
 
 affiliation:
   - id            : "1"
-    institution   : "University of Minnesota"
+    institution   : "Department of Psychology, University of Minnesota"
 
 authornote: |
-  Thank you!
+  Thank you to my PSY 8960 class!
 
 abstract: |
 
@@ -72,6 +72,7 @@ dat_sim
 
 # creating objects to be inserted into the report 
 # assigning variables new names
+# childhood well-being (cwb), simulated data (sim)
 cwb_1_sim <- (dat_sim$cwb_1_sim)
 
 # re-code cwb_2 to be keyed negatively
@@ -117,11 +118,13 @@ cwb_4_sd <- sd(dat_sim$cwb_4_sim, na.rm = TRUE)
 # create new row of the cwb scale based on the mean scores of all of the cwb variables
 simulated <- dat_sim %>% dplyr::mutate(cwb_scale = rowMeans(pick(cwb_1_sim, cwb_2_sim, cwb_3_sim, cwb_4_sim)))
 
+# average of the simulated childhood well-being scale 
 mean(simulated$cwb_scale, na.rm = TRUE)
 
 ### adding cwb_scale to the simulated
 dat_sim$cwb_scale_sim <- c(simulated$cwb_scale)
 
+# assigning these values to variables
 cwb_scale_mean <- mean(simulated$cwb_scale, na.rm = TRUE)
 cwb_scale_mean
 cwb_scale_sd <- sd(simulated$cwb_scale, na.rm = TRUE)
@@ -160,7 +163,7 @@ The data used is publicly available and de-identified so the ethical considerati
 ## Participants and Procedure
 
 ```{r demographics, include = FALSE}
-# average age of respondents 
+# average age of respondents, age is demographic item 1
 dem_1_mean <- mean(dat_sim$dem_1_sim, na.rm = TRUE)
 dem_1_mean
 summary(dem_1_sim)
@@ -172,15 +175,16 @@ dem_1_sd
 
 ```{r demographic tables, include = FALSE}
 summary(dat_sim$dem_2_sim)
-
 table(dat_sim$dem_2_sim)
- 
+
+# creating table for demographic information
+# calculating the percentages from the simulated data
 race_percent <- dat_sim %>% 
  group_by(dem_2_sim) %>% 
  summarise(Percentage = n()/nrow(dat_sim)*100)
 race_percent
 
-
+# using the percents calculated above, creating an apa-style table for race of participants
 race_table <- dplyr::tribble(
     ~Race, ~Percentage,
     "White", "44.88%",
@@ -189,6 +193,7 @@ race_table <- dplyr::tribble(
     "Residual", "2.90%",
     "NA", "39.99%")
 
+# calculating percent for sex of participants
 sex_percent <- dat_sim %>% 
   group_by(dem_3_sim) %>% 
   summarise(Percentage = n()/nrow(dat_sim)*100)
@@ -208,11 +213,10 @@ apa_table(race_table)
 ### Childhood well-being scale
 
 ```{r alpha, include = FALSE}
-
+# calculating Cronbach's alpha for the 4 childhood well-being scale items
 alpha_cwb <-  psych::alpha(dplyr::select(dat_sim, "cwb_1_sim", "cwb_2_sim_r", "cwb_3_sim_r", "cwb_4_sim"))
 
 # pull out just the alpha and save as object to insert into text
-
 alpha_cwb <- alpha_cwb$total$std.alpha
 alpha_cwb
 
@@ -227,10 +231,10 @@ The childhood well-being scale was made up of four different questions. The firs
 The residential stability measures are two questions from the residential section of the SIPP questionnaire. The questions ask about reason for moving and also if they were renting, owned, or were occupying without payment.
 
 ```{r residential alpha, include = FALSE}
+# calculating the Cronbach;s alpha for the residential stability items
 alpha_res <-  psych::alpha(dplyr::select(dat_sim, "res_1_sim", "res_2_sim_r"))
 
 # pull out just the alpha and save as object to insert into text
-
 alpha_res <- alpha_res$total$std.alpha
 alpha_res
 ```
@@ -252,6 +256,7 @@ We used `r cite_r("r-references.bib")` for all our analyses.
 
 # Results
 ```{r descriptives, include = FALSE}
+# making a table for the mean and standard deviation of each of the childhood well-being scale items
 knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 cwb_table <- dplyr::tribble(
     ~Item, ~Mean, ~SD,
@@ -268,6 +273,7 @@ apa_table(cwb_table, caption = "Childhood Wellbeing Scale Items",
 ```
 
 ```{r plot, echo=FALSE}
+# making a plot of the average cwb scores
 ggplot(dat_sim, aes(cwb_scale_sim)) +
   geom_histogram(binwidth = 0.20, fill = "lightblue", color = "white") +
   theme_apa() +
@@ -283,6 +289,7 @@ ggplot(dat_sim, aes(cwb_scale_sim)) +
       # mu = 6691, paired = TRUE, var.equal = FALSE,
       # conf.level = 0.95)
 
+# independent samples t test to calcualte the p-value of the childhood well-being scale and residential history
 t_test <- t.test(dat_sim$res_1_sim, dat_sim$cwb_scale_sim, paired = FALSE, alternative = "two.sided", var.equal = TRUE)
 t_test
 
@@ -291,8 +298,11 @@ p_cwb <- t_test$p.value
 ci_cwb <- t_test$conf.int
 df_cwb <- t_test$parameter
 
+# installing and loading packages for calculating the effect size
 install.packages("lsr")
 library(lsr)
+
+# calculating the effect size 
 effect_size <- cohensD(dat_sim$res_1_sim, dat_sim$cwb_scale_sim)
 effect_size
 
