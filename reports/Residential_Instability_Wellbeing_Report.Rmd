@@ -68,7 +68,7 @@ knitr::opts_chunk$set(cache.extra = knitr::rand_seed)
 
 # read in simulated data
 
-dat_sim <- read.csv("data/residential_stability_simulated_data_2025_11-17.csv")
+dat_sim <- read.csv("../data/residential_stability_simulated_data_2025_11-17.csv")
 dat_sim
 
 # creating objects to be inserted into the report 
