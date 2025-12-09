@@ -22,11 +22,11 @@ authornote: |
 
 abstract: |
 
- This study looks at the relationship between the residential stability and child well-being using data from the Survey of Income and Program Participants. This data is from the United States and is conducted through the Census Bureau. This report looks at 6691 participants and compares their score on the child well-being scale to two residential stability measures. Using a t-test and Cohen's D to measure the p-value and get the effect size.  The results of this study were consistent with the other finds in the research around where people are living and how that is connected to their health. There is strong evidence that suggests that the stability of a child's residence contributes to their well-being score. There should be more reseearch done. 
+ This study looks at the relationship between the residential stability and child well-being using data from the Survey of Income and Program Participants. This data is from the United States and is conducted through the Census Bureau. This report looks at 6691 participants and compares their score on the child well-being scale to two residential stability measures. Using a t-test and Cohen's D to measure the p-value and get the effect size.  The results of this study were consistent with the other finds in the research around where people are living and how that is connected to their health. There is strong evidence that suggests that the stability of a child's residence contributes to their well-being score. There should be more research done. 
 
   
 keywords          : "housing, residential stability, childhood wellbeing, health, social determinants of health"
-wordcount         : "X"
+wordcount         : "1324"
 
 bibliography      : ["r-references.bib", "references.bib"]
 
@@ -313,7 +313,7 @@ effect_size
 
 The p-value when comparing residential stability marker 1 and the cwb_scale was very small, *p* `r printp(p_cwb)`. The confidence intervals were `r ci_cwb` with `r df_cwb` degrees of freedom. This was calculated used an independent samples t-test. This compared the child well-being score to if the child was living in a home that was owned, rented, or if they were not paying. Since the p-value was significant I also ran a Cohen's D test to measure the effect size. The Cohen's D was `r effect_size`. This value tells us that the impact of the type of housing was responsible for 90% of the variability in child well-being score.
 
-These results show that the type of housing a child is living in has a significant effect on their well-being. This demonstrates residential stability as renting or not paying is less stable than owning the home. Further research with more robust analysis needs to be done.\
+These results show that the type of housing a child is living in has a significant effect on their well-being. This demonstrates residential stability as renting or not paying is less stable than owning the home. Further research with more robust analysis needs to be done.
 \newpage
 
 # References
